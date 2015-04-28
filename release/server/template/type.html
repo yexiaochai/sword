@@ -1,0 +1,14 @@
+<ul id="type_id">
+    <% for (var i = 0, len = data.length; i < len; i++) { %>
+    <li class="type js_type">
+        <h2><%=data[i].name%></h2>
+        <ul class="product_list">
+            <% for (var j = 0, len1 = data[i].product.length; j < len1; j++) { %>
+                <li class="product">
+                    <%=data[i].product[j].name%>
+                </li>
+            <% } %>
+        </ul>
+    </li>
+    <% } %>
+</ul>
