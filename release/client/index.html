@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="./libs/zepto.js"></script>
+    <script type="text/javascript" src="./libs/underscore.js"></script>
+    <script type="text/javascript" src="./libs/require.js"></script>
+    <script type="text/javascript">
+        require.config({
+            "paths": {
+                "text": "./libs/require.text"
+            }
+        });
+
+        var render = function (template, model, controller, wrapperId) {
+            require([template, model, controller],
+            function (template, model, controller) {
+                //调用model，生成json数据
+                model.execute(function (data) {
+                    data = JSON.parse(data);
+                    if (data.errorno != 0) return;
+                    //根据模板和data生成静态html，并形成dom结构准备插入
+                    var html = $(_.template(template)(data));
+                    var wrapper = $('#' + wrapperId);
+
+                    //将dom结构插入，并且将多余的包裹标志层删除
+                    html.insertBefore(wrapper);
+                    wrapper.remove();
+                    //执行控制器
+                    controller.init();
+                });
+            });
+        };
+    </script>
+</head>
+<body>
+<div id="type_widget_wrapper">
+<script type="text/javascript">
+    render('text!./template/type.html', './model/type', './controller/type', 'type_widget_wrapper');
+</script>
+</div>
+</body>
+</html>
+
